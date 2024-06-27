@@ -2,7 +2,7 @@
 import express from "express"
 import cors from "cors"
 
-const mockData = [
+let mockData = [
     {
         "id": 1,
         "name": "Vanilla Coke",
@@ -53,6 +53,40 @@ app.post(`/newDrink`, (request, response) => {
 
     response.send(mockData)
 })
+
+app.delete(`/drink/:id`, (request, response) => {
+    console.log("PARAMS", request.params)
+
+    const idToDelete = +request.params.id
+    //+request.params.id is the same as: request.params.id.toNumber
+
+    mockData = mockData.filter((el) => el.id != idToDelete)
+
+    response.send(mockData)
+})
+
+app.put('/drink/:id', (request, response) => {
+    const type = request.body.type
+
+    const idToEdit = +request.params.id
+
+    let index; 
+
+    mockData.forEach ((el, i) => {
+        if(el.id === idToEdit) {
+            index = i
+        }
+    })
+    if(index) {
+        if(type ==='plus') {
+            mockData[index].popularity++
+        } else if(type === 'minus') {
+            mockData[index].popularity--
+        }
+    }
+    response.send(mockData)
+})
+
 
 // Open server using app.listen
 app.listen(2319, () => console.log(`Server running at http://localhost:2319`))
