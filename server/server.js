@@ -38,7 +38,8 @@ app.use(express.static(`src`))
 
 app.get(`/drinks`, (request, response) => {
     response.send(mockData)
-})
+}
+)
 
 app.post(`/newDrink`, (request, response) => {
 
